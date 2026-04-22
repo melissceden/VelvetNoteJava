@@ -1,0 +1,44 @@
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.velvet_note.vista.AgregarProductoController"
+      spacing="14"
+      styleClass="form-agregar"
+      prefWidth="600"
+      prefHeight="800">
+
+    <stylesheets>
+        <URL value="@../css/styles.css"/>
+    </stylesheets>
+
+    <Label text="Agregar Producto" styleClass="vn-titulo"/>
+
+    <Label text="Título *" styleClass="form-label"/>
+    <TextField fx:id="txtTitulo" promptText="Nombre del álbum" styleClass="form-input"/>
+
+    <Label text="Artista *" styleClass="form-label"/>
+    <TextField fx:id="txtArtista" promptText="Nombre del artista" styleClass="form-input"/>
+
+    <Label text="Género" styleClass="form-label"/>
+    <TextField fx:id="txtGenero" promptText="Rock, Jazz, Pop..." styleClass="form-input"/>
+
+    <Label text="Formato *" styleClass="form-label"/>
+    <ComboBox fx:id="comboFormato" prefWidth="99999" styleClass="form-combo"/>
+
+    <Label text="Precio *" styleClass="form-label"/>
+    <TextField fx:id="txtPrecio" promptText="0.00" styleClass="form-input"/>
+
+    <Label text="Stock *" styleClass="form-label"/>
+    <TextField fx:id="txtStock" promptText="0" styleClass="form-input"/>
+
+    <Label fx:id="lblError" text="" styleClass="form-error"/>
+
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#handleCancelar" styleClass="btn-cancelar"/>
+        <Button text="Guardar" onAction="#handleGuardar" styleClass="btn-guardar"/>
+    </HBox>
+
+</VBox>

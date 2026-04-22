@@ -1,0 +1,50 @@
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.velvet_note.vista.PapeleraController"
+      spacing="10"
+      styleClass="form-agregar"
+      prefWidth="800"
+      prefHeight="500">
+
+    <stylesheets>
+        <URL value="@../css/styles.css"/>
+    </stylesheets>
+
+    <Label text="Papelera" styleClass="vn-titulo"/>
+
+    <TableView fx:id="tablaPapelera"
+               VBox.vgrow="ALWAYS"
+               styleClass="vn-tabla">
+
+        <columns>
+            <TableColumn fx:id="colId" text="ID" styleClass="vn-columna"/>
+            <TableColumn fx:id="colTitulo" text="Título" styleClass="vn-columna"/>
+            <TableColumn fx:id="colArtista" text="Artista" styleClass="vn-columna"/>
+            <TableColumn fx:id="colVendidos" text="Vendidos" styleClass="vn-columna"/>
+        </columns>
+
+        <placeholder>
+            <Label text="La papelera está vacía."/>
+        </placeholder>
+
+    </TableView>
+
+    <HBox spacing="10">
+
+        <!-- Eempuja los botones a la derecha -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="Restaurar"
+                onAction="#handleRestaurar"
+                styleClass="vn-btn-primario"/>
+        <Button text="Cerrar"
+                onAction="#handleCerrar"
+                styleClass="btn-cancelar"/>
+
+    </HBox>
+
+</VBox>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.velvet_note.vista.AgregarClienteController"
+      spacing="15"
+      styleClass="form-agregar"
+      prefWidth="400">
+
+    <stylesheets>
+        <URL value="@../css/styles.css" />
+    </stylesheets>
+
+
+    <!-- TÍTULO -->
+    <Label text="Agregar Cliente"
+           styleClass="vn-titulo"/>
+
+    <!-- FORMULARIO -->
+    <GridPane hgap="10" vgap="10">
+
+        <!-- CÉDULA -->
+        <Label text="Cédula:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtCedula"
+                   styleClass="form-input"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- NOMBRE -->
+        <Label text="Nombre:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtNombre"
+                   styleClass="form-input"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- APELLIDO -->
+        <Label text="Apellido:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtApellido"
+                   styleClass="form-input"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- TELÉFONO -->
+        <Label text="Teléfono:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTelefono"
+                   styleClass="form-input"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- EMAIL -->
+        <Label text="Email:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtEmail"
+                   styleClass="form-input"
+                   GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+    </GridPane>
+
+    <!-- BOTONES -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+
+        <Button text="Cancelar"
+                onAction="#cancelar"
+                styleClass="btn-cancelar"/>
+
+        <Button text="Guardar"
+                onAction="#guardarCliente"
+                styleClass="btn-guardar"/>
+
+    </HBox>
+
+</VBox>

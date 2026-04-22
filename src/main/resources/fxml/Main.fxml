@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.velvet_note.vista.MainController"
+      prefWidth="1150" prefHeight="700" styleClass="root">
+
+    <stylesheets>
+        <URL value="@../css/styles.css"/>
+    </stylesheets>
+
+    <VBox fx:id="sidebar" prefWidth="240" minWidth="240" spacing="8" styleClass="sidebar">
+        <Region prefHeight="20"/>
+        <Label text="Velvet Note" fx:id="btnHome" onMouseClicked="#handleRegresarMain"
+               maxWidth="Infinity" styleClass="app-title" style="-fx-cursor: hand;"/>
+
+        <Region prefHeight="30"/>
+
+        <Button text="Inventario" onAction="#handleInventario" maxWidth="Infinity" styleClass="menu-button"/>
+        <Button text="Ventas" onAction="#handleVentas" maxWidth="Infinity" styleClass="menu-button"/>
+        <Button text="Clientes" onAction="#handleClientes" maxWidth="Infinity" styleClass="menu-button"/>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Button text="Cerrar sesión" onAction="#handleCerrarSesion" maxWidth="Infinity" styleClass="menu-button"/>
+    </VBox>
+
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #f7f7fc;" HBox.hgrow="ALWAYS">
+        <VBox spacing="25" styleClass="main-content">
+
+            <HBox styleClass="header-box">
+                <Label fx:id="lblBienvenido" text="Bienvenido," styleClass="welcome-label"/>
+            </HBox>
+
+            <VBox fx:id="panelResumenMes" styleClass="resumen-panel">
+                <Label text="Resumen del Mes" styleClass="resumen-panel-titulo"/>
+                <HBox spacing="20">
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="GANANCIAS TOTALES" styleClass="card-title"/>
+                        <Label fx:id="lblVentas" text="₡0,00" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="PRODUCTO MÁS VENDIDO" styleClass="card-title"/>
+                        <Label fx:id="lblProductoMasVendido" text="—" styleClass="inicio-card-value" style="-fx-font-size: 16;"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="PRODUCTO PARA LIQUIDAR" styleClass="card-title"/>
+                        <Label fx:id="lblProductoMenosVendido" text="—" styleClass="inicio-card-value" style="-fx-font-size: 16;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="panelInicio" styleClass="resumen-panel">
+                <Label text="Resumen de la Tienda" styleClass="resumen-panel-titulo"/>
+                <HBox spacing="20">
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="TOTAL PRODUCTOS" styleClass="card-title"/>
+                        <Label fx:id="lblTotalProductos" text="0" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="ALERTAS DE STOCK" styleClass="card-title" style="-fx-text-fill: #a94442;"/>
+                        <Label fx:id="lblStock" text="0" styleClass="card-value" style="-fx-text-fill: #a94442;"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="VALOR INVENTARIO" styleClass="card-title"/>
+                        <Label fx:id="lblValorInventario" text="₡0,00" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="AGOTADOS" styleClass="card-title"/>
+                        <Label fx:id="lblAgotados" text="0" styleClass="card-value"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="panelClientesStats" styleClass="resumen-panel">
+                <Label text="Gestión de Clientes" styleClass="resumen-panel-titulo"/>
+                <HBox spacing="20">
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="CLIENTES NUEVOS" styleClass="card-title"/>
+                        <Label fx:id="lblClientesNuevos" text="0" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="inicio-card" HBox.hgrow="ALWAYS">
+                        <Label text="CLIENTE CON MAYOR COMPRAS" styleClass="card-title"/>
+                        <Label fx:id="lblTopCliente" text="—" styleClass="inicio-card-value" style="-fx-font-size: 16;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <StackPane fx:id="contenidoPrincipal" visible="false" managed="false" styleClass="content-area">
+                <Label text="Cargando módulo..." styleClass="placeholder-text"/>
+            </StackPane>
+
+        </VBox>
+    </ScrollPane>
+</HBox>

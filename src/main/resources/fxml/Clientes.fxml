@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.velvet_note.vista.ClienteController"
+      spacing="15"
+      styleClass="main-content">
+
+    <HBox spacing="10" styleClass="header-box">
+
+        <Label text="Clientes" styleClass="vn-titulo" HBox.hgrow="ALWAYS"/>
+
+        <!-- BOTÓN AGREGAR CLIENTE -->
+        <Button text="Agregar"
+                onAction="#agregarCliente"
+                styleClass="btn-agregar-cliente"/>
+
+        <!-- BOTÓN ELIMINAR -->
+        <Button text="Eliminar"
+                onAction="#eliminarCliente"
+                styleClass="vn-btn-eliminar"/>
+
+    </HBox>
+
+    <!-- TABLA -->
+    <TableView fx:id="tablaClientes"
+               VBox.vgrow="ALWAYS"
+               styleClass="vn-tabla">
+
+        <columns>
+            <TableColumn fx:id="colId" text="ID"/>
+            <TableColumn fx:id="colCedula" text="Cédula"/>
+            <TableColumn fx:id="colNombre" text="Nombre"/>
+            <TableColumn fx:id="colApellido" text="Apellido"/>
+            <TableColumn fx:id="colTelefono" text="Teléfono"/>
+            <TableColumn fx:id="colEmail" text="Email"/>
+        </columns>
+
+    </TableView>
+</VBox>
