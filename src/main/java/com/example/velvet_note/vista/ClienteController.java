@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 
 public class ClienteController {
 
-    // dao para acceder a los datos de clientes
+    // DAO para acceder a los datos de clientes
     private final ClienteDAO dao = new ClienteDAO();
 
     @FXML private TableView<Cliente> tablaClientes;
@@ -57,6 +57,7 @@ public class ClienteController {
             System.out.println("Error al cargar clientes: " + e.getMessage());
             e.printStackTrace();
         }
+        
     }
 
     // se ejecuta cuando el usuario presiona eliminar
