@@ -15,7 +15,7 @@ public class AgregarProductoController {
     @FXML private ComboBox<String> comboFormato;
     @FXML private TextField txtPrecio;
     @FXML private TextField txtStock;
-    @FXML private Label lblError;
+    @FXML private Label     lblError;
 
     // dao para guardar el producto en la base de datos
     private ProductoDAO productoDAO = new ProductoDAO();
@@ -32,27 +32,27 @@ public class AgregarProductoController {
     public void handleGuardar() {
 
         try {
-            // obtiene los datos del formulario
+            // Obtiene los datos del formulario
             String titulo   = txtTitulo.getText().trim();
-            String artista  = txtArtista.getText().trim();
-            String genero   = txtGenero.getText().trim();
-            String formato  = comboFormato.getValue();
+            String artista  = txtArtista.getText().trim();       
+            String genero   = txtGenero.getText().trim();     // .trim() elimina los espacios iniciales y finales
+            String formato  = comboFormato.getValue();            
             String precioTxt = txtPrecio.getText().trim();
             String stockTxt  = txtStock.getText().trim();
 
-            // valida que los campos obligatorios no esten vacios
-            if (titulo.isEmpty() || artista.isEmpty() || formato == null
-                    || precioTxt.isEmpty() || stockTxt.isEmpty()) {
-
+            // Valida que los campos obligatorios no esten vacios        
+            if (titulo.isEmpty() || artista.isEmpty() || formato == null // .isEmpty() verifica si esta vacio 
+                || precioTxt.isEmpty() || stockTxt.isEmpty()) {
+                
                 lblError.setText("Por favor completa todos los campos obligatorios.");
                 return;
             }
 
-            // convierte precio y stock a numeros
+            // Convierte precio y stock a numeros
             BigDecimal precio = new BigDecimal(precioTxt);
-            int stock = Integer.parseInt(stockTxt);
+            int stock = Integer.parseInt(stockTxt);   // .parseInt() Convierte string a int
 
-            // crea el objeto producto
+            // Crea el objeto producto
             Producto nuevo = new Producto(
                     0,          // id (lo genera la base de datos)
                     titulo,
@@ -64,7 +64,7 @@ public class AgregarProductoController {
                     0           // total ventas inicial
             );
 
-            // intenta guardar en la base de datos
+            // Intenta guardar en la base de datos
             boolean guardado = productoDAO.agregar(nuevo);
 
             if (guardado) {
