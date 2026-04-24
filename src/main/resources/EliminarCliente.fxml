@@ -1,0 +1,26 @@
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.velvet_note.vista.EliminarClienteController"
+      spacing="14"
+      styleClass="form-agregar"
+      prefWidth="600"
+      prefHeight="300">
+
+    <stylesheets>
+        <URL value="@../css/styles.css"/>
+    </stylesheets>
+    <!-- TÍTULO DEL DIÁLOGO -->
+    <Label text="Eliminar cliente" styleClass="vn-titulo"/>
+    <!-- MENSAJE DE CONFIRMACIÓN -->
+    <Label fx:id="lblMensaje" text="¿Deseas eliminar el cliente? Su estado será inactivo" styleClass="form-label"/>    
+    <!-- se muestra si ocurre algún problema -->
+    <Label fx:id="lblError" text="" styleClass="form-error"/>
+    <!-- BOTONES: cancelar o confirmar eliminación -->
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#handleCancelar" styleClass="btn-cancelar"/>
+        <Button text="Eliminar" onAction="#handleEliminar" styleClass="vn-btn-eliminar"/>
+    </HBox>
+</VBox>
