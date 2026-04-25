@@ -2,7 +2,7 @@ package com.example.velvet_note.servicio;
 
 import com.example.velvet_note.dao.UsuarioDAO;
 import com.example.velvet_note.modelo.Usuario;
-import org.apache.commons.codec.digest.DigestUtils; // Importa la librería
+import org.apache.commons.codec.digest.DigestUtils; // Importa la librería para encriptar
 
 public class AuthServicio {
 

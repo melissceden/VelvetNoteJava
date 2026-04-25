@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,7 +24,7 @@ public class MainController {
 
     // --- SECCIÓN 2: INVENTARIO ---
     @FXML private Label lblTotalProductos;
-    @FXML private Label lblStock; // Poco stock
+    @FXML private Label lblStock;
     @FXML private Label lblValorInventario;
     @FXML private Label lblAgotados;
 
@@ -41,82 +40,63 @@ public class MainController {
     @FXML private StackPane contenidoPrincipal;
 
     private AuthServicio authServicio;
-    private EstadisticaServicio estadisticaServicio = new EstadisticaServicio();
-    private final NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "CR"));
+    private final EstadisticaServicio estadisticaServicio = new EstadisticaServicio();
+    private final NumberFormat formatoMoneda =
+            NumberFormat.getCurrencyInstance(new Locale("es", "CR"));
 
     public void setAuthServicio(AuthServicio authServicio) {
-        try {
+        ejecutarSeguro(() -> {
             this.authServicio = authServicio;
             String username = authServicio.getUsuarioActivo().getUsername();
             lblBienvenido.setText("Bienvenido, " + username);
             actualizarTodo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private void actualizarTodo() {
-        try {
-            // 1. Ventas del mes
+        ejecutarSeguro(() -> {
+
+            // Ventas
             lblVentas.setText(formatoMoneda.format(estadisticaServicio.getVentasDelMes()));
             lblProductoMasVendido.setText(estadisticaServicio.getProductoMasVendido());
             lblProductoMenosVendido.setText(estadisticaServicio.getProductoMenosVendido());
 
-            // 2. Inventario
+            // Inventario
             lblTotalProductos.setText(estadisticaServicio.getTotalProductosFisicos() + " uds.");
             lblStock.setText(String.valueOf(estadisticaServicio.getProductosPocosStock()));
             lblValorInventario.setText(formatoMoneda.format(estadisticaServicio.getValorTotalInventario()));
             lblAgotados.setText(String.valueOf(estadisticaServicio.getProductosAgotados()));
 
-            // 3. Clientes
+            // Clientes
             lblClientesNuevos.setText(String.valueOf(estadisticaServicio.getClientesNuevosMes()));
             lblTopCliente.setText(estadisticaServicio.getTopCliente());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @FXML
     public void handleRegresarMain() {
-        lblBienvenido.setVisible(true);
-        lblBienvenido.setManaged(true);
-        panelResumenMes.setVisible(true);
-        panelResumenMes.setManaged(true);
-        panelInicio.setVisible(true);
-        panelInicio.setManaged(true);
-        panelClientesStats.setVisible(true);
-        panelClientesStats.setManaged(true);
-
-        contenidoPrincipal.setVisible(false);
-        contenidoPrincipal.setManaged(false);
-
-        actualizarTodo();
+        ejecutarSeguro(() -> {
+            mostrarPaneles(true);
+            contenidoPrincipal.setVisible(false);
+            contenidoPrincipal.setManaged(false);
+            actualizarTodo();
+        });
     }
 
     private void cargarVista(String fxml) {
-        try {
+        ejecutarSeguro(() -> {
             URL url = getClass().getResource("/fxml/" + fxml);
             FXMLLoader loader = new FXMLLoader(url);
             Node vista = loader.load();
 
             contenidoPrincipal.getChildren().setAll(vista);
 
-            // Ocultar paneles de estadísticas
-            lblBienvenido.setVisible(false);
-            lblBienvenido.setManaged(false);
-            panelResumenMes.setVisible(false);
-            panelResumenMes.setManaged(false);
-            panelInicio.setVisible(false);
-            panelInicio.setManaged(false);
-            panelClientesStats.setVisible(false);
-            panelClientesStats.setManaged(false);
+            mostrarPaneles(false);
 
             contenidoPrincipal.setVisible(true);
             contenidoPrincipal.setManaged(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @FXML public void handleInventario() { cargarVista("Inventario.fxml"); }
@@ -125,11 +105,30 @@ public class MainController {
 
     @FXML
     public void handleCerrarSesion() {
-        try {
+        ejecutarSeguro(() -> {
             authServicio.logout();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
             Stage stage = (Stage) lblBienvenido.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
+        });
+    }
+
+    // 🔹 Centraliza visibilidad de paneles
+    private void mostrarPaneles(boolean visible) {
+        lblBienvenido.setVisible(visible);
+        lblBienvenido.setManaged(visible);
+        panelResumenMes.setVisible(visible);
+        panelResumenMes.setManaged(visible);
+        panelInicio.setVisible(visible);
+        panelInicio.setManaged(visible);
+        panelClientesStats.setVisible(visible);
+        panelClientesStats.setManaged(visible);
+    }
+
+    // 🔹 Manejo centralizado de errores
+    private void ejecutarSeguro(Runnable accion) {
+        try {
+            accion.run();
         } catch (Exception e) {
             e.printStackTrace();
         }

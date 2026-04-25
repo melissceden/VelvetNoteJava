@@ -5,22 +5,22 @@ import java.time.LocalDate;
 public class Cliente {
 
     // Atributos de la tabla Cliente
-    private int    clienteId;
-    private String cedula;
-    private String nombre;
-    private String apellido;
-    private String telefono;
-    private String email;
+    private int       clienteId;
+    private String    cedula;
+    private String    nombre;
+    private String    apellido;
+    private String    telefono;
+    private String    email;
     private LocalDate fechaRegistro;
 
     // GETTERS — permiten leer los atributos desde otros archivos
-    public int          getClienteId()      { return clienteId;        }
-    public String       getCedula()         { return cedula;           }
-    public String       getNombre()         { return nombre;           }
-    public String       getApellido()       { return apellido;         }
-    public String       getTelefono()       { return telefono;         }
-    public String       getEmail()          { return email;            }
-    public LocalDate    getFechaRegistro()  { return fechaRegistro;    }
+    public int        getClienteId()      { return clienteId;      }
+    public String     getCedula()         { return cedula;         }
+    public String     getNombre()         { return nombre;         }
+    public String     getApellido()       { return apellido;       }
+    public String     getTelefono()       { return telefono;       }
+    public String     getEmail()          { return email;          }
+    public LocalDate  getFechaRegistro()  { return fechaRegistro;  }
 
     // SETTERS — permiten modificar los atributos desde otros archivos
     public void setClienteId(int clienteId)                 { this.clienteId      = clienteId;     }

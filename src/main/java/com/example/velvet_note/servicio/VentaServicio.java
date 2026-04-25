@@ -5,8 +5,8 @@ import com.example.velvet_note.dao.DetalleVentaDAO;
 import com.example.velvet_note.modelo.Venta;
 import com.example.velvet_note.modelo.DetalleVenta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;  // Librerias necesarias para manejar
+import java.util.List;       // listas de datos
 
 public class VentaServicio {
 
@@ -31,7 +31,7 @@ public class VentaServicio {
             return detalleDAO.obtenerPorVenta(ventaId);
         } catch (Exception e) {
             System.out.println("Error al obtener detalles: " + e.getMessage());
-            return new ArrayList<>();
+            return new ArrayList<>(); // Devuelve una lista vacia
         }
     }
 

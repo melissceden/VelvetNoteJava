@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -24,6 +26,11 @@
 
         <Region prefHeight="30"/>
 
+        <ImageView>
+            <image>
+                <Image url="@/img/papelera.png"/>
+            </image>
+        </ImageView>
         <Button text="Inventario" onAction="#handleInventario" maxWidth="Infinity" styleClass="menu-button"/>
         <Button text="Ventas" onAction="#handleVentas" maxWidth="Infinity" styleClass="menu-button"/>
         <Button text="Clientes" onAction="#handleClientes" maxWidth="Infinity" styleClass="menu-button"/>

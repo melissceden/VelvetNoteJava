@@ -4,18 +4,18 @@ import com.example.velvet_note.dao.ProductoDAO;
 import com.example.velvet_note.modelo.Producto;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import java.math.BigDecimal;
+import javafx.stage.Stage;   // Para controlar las ventanas
+import java.math.BigDecimal; // Para manejar decimales, en precios
 
 public class AgregarProductoController {
 
-    @FXML private TextField txtTitulo;
-    @FXML private TextField txtArtista;
-    @FXML private TextField txtGenero;
+    @FXML private TextField        txtTitulo;
+    @FXML private TextField        txtArtista;
+    @FXML private TextField        txtGenero;
     @FXML private ComboBox<String> comboFormato;
-    @FXML private TextField txtPrecio;
-    @FXML private TextField txtStock;
-    @FXML private Label     lblError;
+    @FXML private TextField        txtPrecio;
+    @FXML private TextField        txtStock;
+    @FXML private Label            lblError;
 
     // dao para guardar el producto en la base de datos
     private ProductoDAO productoDAO = new ProductoDAO();
