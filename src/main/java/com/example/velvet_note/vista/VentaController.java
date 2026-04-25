@@ -1,211 +1,163 @@
 package com.example.velvet_note.vista;
 
-import com.example.velvet_note.dao.VentaDAO;
-import com.example.velvet_note.dao.DetalleVentaDAO;
-import com.example.velvet_note.modelo.Venta;
-import com.example.velvet_note.modelo.DetalleVenta;
+import com.example.velvet_note.dao.VentaDAO;        // DAO ventas
+import com.example.velvet_note.dao.DetalleVentaDAO; // DAO detalles
+import com.example.velvet_note.modelo.Venta;        // Modelo venta
+import com.example.velvet_note.modelo.DetalleVenta; // Modelo detalle
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;  // Propiedades tabla
+import javafx.collections.FXCollections;            // Listas observables
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.math.BigDecimal;
+import java.math.BigDecimal;                        // Decimales
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;          // Formato fecha
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/**
- * Controlador de la pantalla Ventas
- * Aquí solo se visualizan las ventas y se pueden eliminar
- */
 public class VentaController implements Initializable {
 
-    // ───────────── TABLA DE VENTAS ─────────────
-    @FXML private TableView<Venta> tablaVentas;
+    @FXML private TableView<Venta> tablaVentas;         // Tabla ventas
     @FXML private TableColumn<Venta, String> colId;
     @FXML private TableColumn<Venta, String> colFecha;
     @FXML private TableColumn<Venta, String> colCliente;
     @FXML private TableColumn<Venta, String> colMetodoPago;
     @FXML private TableColumn<Venta, String> colTotal;
 
-    // ───────────── TABLA DE DETALLES ─────────────
-    @FXML private TableView<DetalleVenta> tablaDetalles;
+    @FXML private TableView<DetalleVenta> tablaDetalles; // Tabla detalles
     @FXML private TableColumn<DetalleVenta, String> colProducto;
     @FXML private TableColumn<DetalleVenta, String> colCantidad;
     @FXML private TableColumn<DetalleVenta, String> colPrecioUnit;
     @FXML private TableColumn<DetalleVenta, String> colSubtotal;
 
-    // Texto que cambia según la venta seleccionada
-    @FXML private Label lblDetallesTitulo;
+    @FXML private Label lblDetallesTitulo; // Texto dinámico
 
-    // Botón eliminar
-    @FXML private Button btnEliminar;
+    private VentaDAO ventaDAO = new VentaDAO();           // Acceso BD ventas
+    private DetalleVentaDAO detalleDAO = new DetalleVentaDAO(); // Acceso BD detalles
 
-    // ───────────── DAO (conexión directa a BD) ─────────────
-    private VentaDAO ventaDAO = new VentaDAO();
-    private DetalleVentaDAO detalleDAO = new DetalleVentaDAO();
-
-    // Formato de fecha
     private static final DateTimeFormatter FORMATO_FECHA =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); // Formato fecha
 
-    // ───────────── INICIO AUTOMÁTICO ─────────────
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarColumnaVentas();
-        configurarColumnaDetalles();
-        configurarSeleccion();
-        cargarVentas();
-    }
 
-    // ───────────── CONFIGURAR TABLA DE VENTAS ─────────────
-    private void configurarColumnaVentas() {
-
-        // Mostrar ID
+        // Configurar columnas ventas
         colId.setCellValueFactory(data ->
-                new SimpleStringProperty(String.valueOf(data.getValue().getVentaId())));
+                new SimpleStringProperty(String.valueOf(data.getValue().getVentaId()))); // ID
 
-        // Formatear fecha
-        colFecha.setCellValueFactory(data -> {
+        colFecha.setCellValueFactory(data -> { // Fecha formateada
             var fecha = data.getValue().getFecha();
-            String texto = (fecha != null) ? fecha.format(FORMATO_FECHA) : "—";
-            return new SimpleStringProperty(texto);
+            return new SimpleStringProperty(
+                    (fecha != null) ? fecha.format(FORMATO_FECHA) : "—"
+            );
         });
 
-        // Cliente
-        colCliente.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue().getClienteNombre()));
+        colCliente.setCellValueFactory(new PropertyValueFactory<>("clienteNombre")); // Cliente
+        colMetodoPago.setCellValueFactory(new PropertyValueFactory<>("metodoPago")); // Método pago
 
-        // Método de pago
-        colMetodoPago.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue().getMetodoPago()));
-
-        // Total
-        colTotal.setCellValueFactory(data -> {
+        colTotal.setCellValueFactory(data -> { // Total formateado
             BigDecimal total = data.getValue().getTotal();
-            String texto = (total != null) ? String.format("%,.2f", total) : "0.00";
-            return new SimpleStringProperty(texto);
+            return new SimpleStringProperty(
+                    (total != null) ? String.format("%,.2f", total) : "0.00"
+            );
         });
-    }
 
-    // ───────────── CONFIGURAR TABLA DE DETALLES ─────────────
-    private void configurarColumnaDetalles() {
-
-        // Nombre del producto
+        // Configurar columnas detalles
         colProducto.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue().getProductoTitulo()));
+                new SimpleStringProperty(data.getValue().getProductoTitulo())); // Producto
 
-        // Cantidad
         colCantidad.setCellValueFactory(data ->
-                new SimpleStringProperty(String.valueOf(data.getValue().getCantidad())));
+                new SimpleStringProperty(String.valueOf(data.getValue().getCantidad()))); // Cantidad
 
-        // Precio unitario
-        colPrecioUnit.setCellValueFactory(data -> {
+        colPrecioUnit.setCellValueFactory(data -> { // Precio unitario
             BigDecimal p = data.getValue().getPrecioUnitario();
-            return new SimpleStringProperty(p != null ? String.format("%,.2f", p) : "0.00");
+            return new SimpleStringProperty(
+                    (p != null) ? String.format("%,.2f", p) : "0.00"
+            );
         });
 
-        // Subtotal
-        colSubtotal.setCellValueFactory(data -> {
+        colSubtotal.setCellValueFactory(data -> { // Subtotal
             BigDecimal s = data.getValue().getSubtotal();
-            return new SimpleStringProperty(s != null ? String.format("%,.2f", s) : "0.00");
+            return new SimpleStringProperty(
+                    (s != null) ? String.format("%,.2f", s) : "0.00"
+            );
         });
-    }
 
-    // ───────────── CUANDO SE SELECCIONA UNA VENTA ─────────────
-    private void configurarSeleccion() {
-        tablaVentas.getSelectionModel()
-                .selectedItemProperty()
+        // Listener cuando selecciona una venta
+        tablaVentas.getSelectionModel().selectedItemProperty()
                 .addListener((obs, anterior, seleccionada) -> {
 
-                    // Si selecciona algo → cargar detalles
-                    if (seleccionada != null) {
-                        cargarDetalles(seleccionada);
-                    } else {
-                        // Si no hay selección → limpiar
+                    if (seleccionada != null) { // Si selecciona
+
+                        try {
+                            // Cambiar título
+                            lblDetallesTitulo.setText(
+                                    "Detalles de Venta #" + seleccionada.getVentaId()
+                                            + " — " + seleccionada.getClienteNombre()
+                                            + " | " + seleccionada.getFecha().format(FORMATO_FECHA)
+                            );
+
+                            // Cargar detalles
+                            List<DetalleVenta> detalles =
+                                    detalleDAO.obtenerPorVenta(seleccionada.getVentaId());
+
+                            tablaDetalles.setItems(
+                                    FXCollections.observableArrayList(detalles)
+                            );
+
+                        } catch (Exception e) {
+                            mostrarAlerta(Alert.AlertType.ERROR,
+                                    "Error", "No se pudo cargar el detalle:\n" + e.getMessage());
+                        }
+
+                    } else { // Si no hay selección
                         tablaDetalles.getItems().clear();
                         lblDetallesTitulo.setText("Selecciona una venta para ver sus detalles");
                     }
                 });
+
+        cargarVentas(); // Cargar ventas al inicio
     }
 
-    // ───────────── CARGAR TODAS LAS VENTAS ─────────────
     private void cargarVentas() {
         try {
-            // Obtener desde la BD
-            List<Venta> ventas = ventaDAO.obtenerTodas();
-
-            // Convertir a lista observable (JavaFX)
-            ObservableList<Venta> datos = FXCollections.observableArrayList(ventas);
-
-            // Mostrar en tabla
-            tablaVentas.setItems(datos);
-
+            List<Venta> ventas = ventaDAO.obtenerTodas(); // BD
+            tablaVentas.setItems(FXCollections.observableArrayList(ventas)); // Mostrar
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR,
                     "Error", "No se pudieron cargar las ventas:\n" + e.getMessage());
         }
     }
 
-    // ───────────── CARGAR DETALLES DE UNA VENTA ─────────────
-    private void cargarDetalles(Venta venta) {
-        try {
-            // Cambiar título dinámico
-            lblDetallesTitulo.setText(
-                    "Detalles de Venta #" + venta.getVentaId()
-                            + " — " + venta.getClienteNombre()
-                            + " | " + venta.getFecha().format(FORMATO_FECHA));
-
-            // Obtener detalles desde DAO
-            List<DetalleVenta> detalles = detalleDAO.obtenerPorVenta(venta.getVentaId());
-
-            // Mostrar en tabla
-            tablaDetalles.setItems(FXCollections.observableArrayList(detalles));
-
-        } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR,
-                    "Error", "No se pudo cargar el detalle:\n" + e.getMessage());
-        }
-    }
-
-    // ───────────── ELIMINAR VENTA ─────────────
     @FXML
     private void eliminarVenta() {
 
-        // Obtener la venta seleccionada
-        Venta seleccionada = tablaVentas.getSelectionModel().getSelectedItem();
+        Venta seleccionada = tablaVentas.getSelectionModel().getSelectedItem(); // Selección
 
-        // Validar que haya selección
-        if (seleccionada == null) {
+        if (seleccionada == null) { // Validar
             mostrarAlerta(Alert.AlertType.WARNING,
                     "Sin selección", "Selecciona una venta primero.");
             return;
         }
 
-        // Confirmación
-        Optional<ButtonType> respuesta = new Alert(
+        Optional<ButtonType> respuesta = new Alert( // Confirmación
                 Alert.AlertType.CONFIRMATION,
                 "¿Eliminar la venta #" + seleccionada.getVentaId() + "?",
                 ButtonType.YES, ButtonType.NO
         ).showAndWait();
 
-        // Si confirma
         if (respuesta.isPresent() && respuesta.get() == ButtonType.YES) {
             try {
-                // Eliminar desde la BD
-                ventaDAO.eliminar(seleccionada.getVentaId());
+                ventaDAO.eliminar(seleccionada.getVentaId()); // Eliminar BD
 
-                // Limpiar detalles
-                tablaDetalles.getItems().clear();
+                tablaDetalles.getItems().clear(); // Limpiar
                 lblDetallesTitulo.setText("Selecciona una venta para ver sus detalles");
 
-                // Recargar tabla
-                cargarVentas();
+                cargarVentas(); // Recargar
 
                 mostrarAlerta(Alert.AlertType.INFORMATION,
                         "Éxito", "Venta eliminada correctamente.");
@@ -217,12 +169,11 @@ public class VentaController implements Initializable {
         }
     }
 
-    // ───────────── ALERTAS ─────────────
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alerta = new Alert(tipo);
+        Alert alerta = new Alert(tipo); // Crear alerta
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
-        alerta.showAndWait();
+        alerta.showAndWait(); // Mostrar
     }
 }

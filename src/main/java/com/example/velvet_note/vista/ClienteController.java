@@ -1,102 +1,105 @@
 package com.example.velvet_note.vista;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import com.example.velvet_note.dao.ClienteDAO;       // DAO clientes
+import com.example.velvet_note.modelo.Cliente;       // Modelo cliente
 
-import com.example.velvet_note.dao.ClienteDAO;
-import com.example.velvet_note.modelo.Cliente;
+import javafx.collections.FXCollections;             // Listas observables
+import javafx.fxml.FXML;                             // Vinculación FXML
+import javafx.fxml.FXMLLoader;                       // Cargar FXML
+import javafx.scene.Parent;                          // Nodo raíz
+import javafx.scene.Scene;                           // Escena
+import javafx.scene.control.*;                       // Controles UI
+import javafx.scene.control.cell.PropertyValueFactory; // Mapear columnas
+import javafx.stage.Stage;                           // Ventana
 
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import java.io.IOException;                          // Excepción IO
 
 public class ClienteController {
 
-    private final ClienteDAO dao = new ClienteDAO();
+    private final ClienteDAO dao = new ClienteDAO(); // Acceso BD
 
-    @FXML private TableView<Cliente> tablaClientes;
-    @FXML private TableColumn<Cliente, Integer> colId;
-    @FXML private TableColumn<Cliente, String> colCedula;
-    @FXML private TableColumn<Cliente, String> colNombre;
-    @FXML private TableColumn<Cliente, String> colApellido;
-    @FXML private TableColumn<Cliente, String> colTelefono;
-    @FXML private TableColumn<Cliente, String> colEmail;
+    @FXML private TableView<Cliente> tablaClientes;  // Tabla clientes
+    @FXML private TableColumn<Cliente, Integer> colId;       // ID
+    @FXML private TableColumn<Cliente, String> colCedula;    // Cédula
+    @FXML private TableColumn<Cliente, String> colNombre;    // Nombre
+    @FXML private TableColumn<Cliente, String> colApellido;  // Apellido
+    @FXML private TableColumn<Cliente, String> colTelefono;  // Teléfono
+    @FXML private TableColumn<Cliente, String> colEmail;     // Email
 
     @FXML
     public void initialize() {
-        ejecutarSeguro(() -> {
-            System.out.println("Cargando vista de clientes...");
 
-            // Configuración simplificada de columnas
-            colId.setCellValueFactory(new PropertyValueFactory<>("clienteId"));
-            colCedula.setCellValueFactory(new PropertyValueFactory<>("cedula"));
-            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-            colApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-            colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-            colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        System.out.println("Cargando vista de clientes..."); // Debug
 
-            cargar();
-        }, "Error al inicializar la vista");
+        // Configurar columnas (conecta con getters del modelo)
+        colId.setCellValueFactory(new PropertyValueFactory<>("clienteId"));
+        colCedula.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        cargar(); // Cargar datos iniciales
     }
 
     private void cargar() {
-        ejecutarSeguro(() -> {
+        try {
+            // Obtener clientes y convertir a lista observable
             tablaClientes.setItems(
                     FXCollections.observableArrayList(dao.obtenerTodos())
             );
-        }, "Error al cargar clientes");
-    }
-
-    @FXML
-    private void eliminarCliente() {
-        ejecutarSeguro(() -> {
-            Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem();
-
-            if (cliente == null) {
-                mostrarAlerta("Seleccione un cliente para eliminar.");
-                return;
-            }
-
-            dao.eliminar(cliente.getClienteId());
-            System.out.println("Cliente eliminado correctamente.");
-            cargar();
-
-        }, "Error al eliminar cliente");
-    }
-
-    @FXML
-    private void agregarCliente() {
-        ejecutarSeguro(() -> {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/AgregarCliente.fxml")
-            );
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Agregar Cliente");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        }, "Error al abrir ventana de agregar cliente");
-    }
-
-    //  Metodo reutilizable para manejo de errores
-    private void ejecutarSeguro(Runnable accion, String mensajeError) {
-        try {
-            accion.run();
         } catch (Exception e) {
-            System.out.println(mensajeError + ": " + e.getMessage());
+            System.out.println("Error al cargar clientes: " + e.getMessage()); // Log
             e.printStackTrace();
         }
     }
 
-    // 🔹 Alerta básica para el usuario
+    @FXML
+    private void eliminarCliente() {
+
+        Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem(); // Selección
+
+        if (cliente == null) { // Validar selección
+            mostrarAlerta("Seleccione un cliente para eliminar.");
+            return;
+        }
+
+        try {
+            dao.eliminar(cliente.getClienteId()); // Eliminar en BD
+            System.out.println("Cliente eliminado correctamente."); // Log
+            cargar(); // Refrescar tabla
+
+        } catch (Exception e) {
+            System.out.println("Error al eliminar cliente: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void agregarCliente() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader( // Crear loader con la vista FXML
+                    getClass().getResource("/fxml/AgregarCliente.fxml")
+            );
+
+            Parent root = loader.load(); // Cargar vista
+
+            Stage stage = new Stage(); // Nueva ventana
+            stage.setTitle("Agregar Cliente"); // Título
+            stage.setScene(new Scene(root)); // Escena
+            stage.show(); // Mostrar
+
+        } catch (IOException e) {
+            System.out.println("Error al abrir ventana: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.WARNING); // Crear alerta
         alert.setContentText(mensaje);
-        alert.show();
+        alert.show(); // Mostrar
     }
 }
