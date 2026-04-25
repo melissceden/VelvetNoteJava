@@ -1,136 +1,142 @@
 package com.example.velvet_note.vista;
 
-import com.example.velvet_note.servicio.AuthServicio;
-import com.example.velvet_note.servicio.EstadisticaServicio;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import com.example.velvet_note.servicio.AuthServicio;         // Accede a servicio de autenticacion
+import com.example.velvet_note.servicio.EstadisticaServicio;  // Servicio de Estadisticas
+import javafx.fxml.FXML;              // Indica a JavaFX qué atributos/metodos estan vinculados al FXML
+import javafx.fxml.FXMLLoader;        // Carga archivos FXML convirtiendolos en objetos Java
+import javafx.scene.Node;             // Clase base de todos los elementos visuales
+import javafx.scene.Scene;            // Representa el contenido completo de una ventana
+import javafx.scene.control.Label;    // Componente para mostrar texto en la interfaz
+import javafx.scene.layout.StackPane; // Apila elementos uno encima de otro
+import javafx.scene.layout.VBox;      // Organiza elementos en forma vertical
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.io.IOException;           // Necesaria para manejar errores al cargar vistas
+import java.net.URL;                  // Permite localizar recursos dentro del proyecto
+import java.text.NumberFormat;        // Permite formatear numeros (ej: moneda)
+import java.util.Locale;              // Define configuración regional
 
 public class MainController {
 
-    // --- SECCIÓN 1: VENTAS ---
+    // SECCIÓN VENTAS, Muestra métricas principales de ventas
     @FXML private Label lblVentas;
     @FXML private Label lblProductoMasVendido;
     @FXML private Label lblProductoMenosVendido;
 
-    // --- SECCIÓN 2: INVENTARIO ---
+    // SECCIÓN INVENTARIO, Estado actual de productos
     @FXML private Label lblTotalProductos;
     @FXML private Label lblStock;
     @FXML private Label lblValorInventario;
     @FXML private Label lblAgotados;
 
-    // --- SECCIÓN 3: CLIENTES ---
+    // SECCIÓN CLIENTES, Información relevante de clientes
     @FXML private Label lblClientesNuevos;
     @FXML private Label lblTopCliente;
 
-    // --- UI GENERAL ---
+    // UI GENERAL, Elementos que controlan la navegación y visibilidad
     @FXML private Label lblBienvenido;
     @FXML private VBox panelResumenMes;
     @FXML private VBox panelInicio;
     @FXML private VBox panelClientesStats;
     @FXML private StackPane contenidoPrincipal;
 
-    private AuthServicio authServicio;
+
+    private AuthServicio authServicio; // Servicio de autenticación
+
+    // Servicio que proporciona todos los datos estadísticos
     private final EstadisticaServicio estadisticaServicio = new EstadisticaServicio();
-    private final NumberFormat formatoMoneda =
+
+    private final NumberFormat formatoMoneda = // Formateador de moneda con configuración de Costa Rica
             NumberFormat.getCurrencyInstance(new Locale("es", "CR"));
 
+    // Recibe el servicio de autenticación y configura la bienvenida del usuario
     public void setAuthServicio(AuthServicio authServicio) {
-        ejecutarSeguro(() -> {
-            this.authServicio = authServicio;
-            String username = authServicio.getUsuarioActivo().getUsername();
-            lblBienvenido.setText("Bienvenido, " + username);
-            actualizarTodo();
-        });
+        this.authServicio = authServicio;
+
+        String username = authServicio.getUsuarioActivo().getUsername(); // Obtiene el usuario activo
+        lblBienvenido.setText("Bienvenido, " + username);                // Muestra el usuario
+
+        // Carga todos los datos iniciales en la interfaz
+        actualizarTodo();
     }
 
+    // Funciona como puente entre la lógica (servicio) y la vista (labels)
     private void actualizarTodo() {
-        ejecutarSeguro(() -> {
+        var stats = estadisticaServicio;   // Se usa una referencia local
 
-            // Ventas
-            lblVentas.setText(formatoMoneda.format(estadisticaServicio.getVentasDelMes()));
-            lblProductoMasVendido.setText(estadisticaServicio.getProductoMasVendido());
-            lblProductoMenosVendido.setText(estadisticaServicio.getProductoMenosVendido());
+        lblVentas.setText(formatoMoneda.format(stats.getVentasDelMes()));    // VENTAS
+        lblProductoMasVendido.setText(stats.getProductoMasVendido());
+        lblProductoMenosVendido.setText(stats.getProductoMenosVendido());
 
-            // Inventario
-            lblTotalProductos.setText(estadisticaServicio.getTotalProductosFisicos() + " uds.");
-            lblStock.setText(String.valueOf(estadisticaServicio.getProductosPocosStock()));
-            lblValorInventario.setText(formatoMoneda.format(estadisticaServicio.getValorTotalInventario()));
-            lblAgotados.setText(String.valueOf(estadisticaServicio.getProductosAgotados()));
+        lblTotalProductos.setText(stats.getTotalProductosFisicos() + " uds.");    // INVENTARIO
+        lblStock.setText("" + stats.getProductosPocosStock());                    // Convertido a texto
+        lblValorInventario.setText(formatoMoneda.format(stats.getValorTotalInventario()));
+        lblAgotados.setText("" + stats.getProductosAgotados());
 
-            // Clientes
-            lblClientesNuevos.setText(String.valueOf(estadisticaServicio.getClientesNuevosMes()));
-            lblTopCliente.setText(estadisticaServicio.getTopCliente());
-
-        });
+        lblClientesNuevos.setText("" + stats.getClientesNuevosMes());        // CLIENTES
+        lblTopCliente.setText(stats.getTopCliente());
     }
+
 
     @FXML
-    public void handleRegresarMain() {
-        ejecutarSeguro(() -> {
-            mostrarPaneles(true);
-            contenidoPrincipal.setVisible(false);
-            contenidoPrincipal.setManaged(false);
-            actualizarTodo();
-        });
+    public void handleRegresarMain() { // Permite regresar a la vista principal ocultando sub-vistas
+        mostrarPaneles(true);    // Muestra nuevamente los paneles principales
+        contenidoPrincipal.setVisible(false); // Oculta el contenido dinámico cargado anteriormente
+        contenidoPrincipal.setManaged(false);
+        actualizarTodo();             // Refresca la información
     }
 
-    private void cargarVista(String fxml) {
-        ejecutarSeguro(() -> {
-            URL url = getClass().getResource("/fxml/" + fxml);
-            FXMLLoader loader = new FXMLLoader(url);
-            Node vista = loader.load();
 
-            contenidoPrincipal.getChildren().setAll(vista);
-
-            mostrarPaneles(false);
-
-            contenidoPrincipal.setVisible(true);
+    private void cargarVista(String fxml) { // Carga dinámicamente una vista FXML dentro del contenedor principal
+        try {
+            URL url = getClass().getResource("/fxml/" + fxml); // Localiza el archivo FXML
+            FXMLLoader loader = new FXMLLoader(url);                 // Prepara el cargador
+            Node vista = loader.load();                              // Carga la vista
+            contenidoPrincipal.getChildren().setAll(vista);          // Inserta la nueva vista en el contenedor
+            mostrarPaneles(false);                             // Oculta paneles principales
+            contenidoPrincipal.setVisible(true);                     // Muestra el nuevo contenido
             contenidoPrincipal.setManaged(true);
-        });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    // Métodos que responden a eventos de la UI
     @FXML public void handleInventario() { cargarVista("Inventario.fxml"); }
     @FXML public void handleVentas()     { cargarVista("Ventas.fxml"); }
     @FXML public void handleClientes()   { cargarVista("Clientes.fxml"); }
 
+    // Cierra la sesión actual y redirige al login
     @FXML
     public void handleCerrarSesion() {
-        ejecutarSeguro(() -> {
-            authServicio.logout();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-            Stage stage = (Stage) lblBienvenido.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-        });
-    }
 
-    // 🔹 Centraliza visibilidad de paneles
-    private void mostrarPaneles(boolean visible) {
-        lblBienvenido.setVisible(visible);
-        lblBienvenido.setManaged(visible);
-        panelResumenMes.setVisible(visible);
-        panelResumenMes.setManaged(visible);
-        panelInicio.setVisible(visible);
-        panelInicio.setManaged(visible);
-        panelClientesStats.setVisible(visible);
-        panelClientesStats.setManaged(visible);
-    }
-
-    // 🔹 Manejo centralizado de errores
-    private void ejecutarSeguro(Runnable accion) {
         try {
-            accion.run();
-        } catch (Exception e) {
+            authServicio.logout(); // Cierra la sesión del usuario
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml")); // Carga la vista de login
+            Stage stage = (Stage) lblBienvenido.getScene().getWindow(); // Obtiene la ventana actual
+            stage.setScene(new Scene(loader.load())); // Reemplaza la escena
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void mostrarPaneles(boolean visible) { // Controla la visibilidad de los paneles principales
+
+        // visible: controla si se ve o no
+        // managed: controla si ocupa espacio en el layout
+
+        lblBienvenido.setVisible(visible);
+        lblBienvenido.setManaged(visible);
+
+        panelResumenMes.setVisible(visible);
+        panelResumenMes.setManaged(visible);
+
+        panelInicio.setVisible(visible);
+        panelInicio.setManaged(visible);
+
+        panelClientesStats.setVisible(visible);
+        panelClientesStats.setManaged(visible);
     }
 }
