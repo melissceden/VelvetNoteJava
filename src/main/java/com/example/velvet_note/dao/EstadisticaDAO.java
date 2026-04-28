@@ -82,7 +82,7 @@ public class EstadisticaDAO {
         return total;
     }
 
-    // Calcula el valor monetario de todo el inventario actual
+    // Calcula el valor monetario detodo el inventario actual
     public BigDecimal getValorTotalInventario() {
         BigDecimal total = BigDecimal.ZERO;
         String sql = "SELECT SUM(stock * precio_venta) " +
@@ -134,7 +134,7 @@ public class EstadisticaDAO {
         return total;
     }
 
-    // --- SECCIÓN DE CLIENTES ---
+
 
     // Obtiene el número de clientes que se registraron este mes
     public int getClientesNuevosMes() {

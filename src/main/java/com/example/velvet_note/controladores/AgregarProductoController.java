@@ -27,6 +27,7 @@ public class AgregarProductoController {
         comboFormato.getItems().addAll("Vinilo", "CD", "Casete");
     }
 
+
     // se ejecuta cuando el usuario presiona guardar
     @FXML
     public void handleGuardar() {
