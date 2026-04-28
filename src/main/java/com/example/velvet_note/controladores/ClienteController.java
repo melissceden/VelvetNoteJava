@@ -1,4 +1,4 @@
-package com.example.velvet_note.vista;
+package com.example.velvet_note.controladores;
 
 import com.example.velvet_note.dao.ClienteDAO;       // DAO clientes
 import com.example.velvet_note.modelo.Cliente;       // Modelo cliente
@@ -93,6 +93,25 @@ public class ClienteController {
 
         } catch (IOException e) {
             System.out.println("Error al abrir ventana: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handlePapelera() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/PapeleraCliente.fxml")
+            );
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Papelera de Clientes");
+            stage.setScene(new Scene(root));
+            stage.show();
+            // Al cerrar la papelera, refrescamos la tabla
+            stage.setOnHidden(e -> cargar());
+        } catch (IOException e) {
+            System.out.println("Error al abrir papelera: " + e.getMessage());
             e.printStackTrace();
         }
     }

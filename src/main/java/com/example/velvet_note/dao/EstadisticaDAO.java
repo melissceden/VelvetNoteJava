@@ -86,7 +86,7 @@ public class EstadisticaDAO {
     public BigDecimal getValorTotalInventario() {
         BigDecimal total = BigDecimal.ZERO;
         String sql = "SELECT SUM(stock * precio_venta) " +
-                     "FROM PRODUCTO WHERE estado = 1";
+                "FROM PRODUCTO WHERE estado = 1";
 
         try {
             Connection con = ConexionDB.getConexion();
@@ -100,17 +100,14 @@ public class EstadisticaDAO {
         return total;
     }
 
-    // Obtiene el conteo de productos cuyo stock llegó a cero
     public int getProductosAgotados() {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM PRODUCTO " +
-                     "WHERE stock = 0 AND estado = 1";
-
+                "WHERE stock = 0 AND estado = 1";
         try {
             Connection con = ConexionDB.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) total = rs.getInt(1);
         } catch (SQLException e) {
             System.out.println("Error en productos agotados: " + e.getMessage());
@@ -122,8 +119,8 @@ public class EstadisticaDAO {
     public int getProductosPocosStock() {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM PRODUCTO " +
-                     "WHERE stock < 5 AND stock > 0" +
-                     "AND estado = 1";
+                "WHERE stock < 5 AND stock > 0 " +
+                "AND estado = 1";
 
         try {
             Connection con = ConexionDB.getConexion();

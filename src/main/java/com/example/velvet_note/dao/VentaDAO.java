@@ -12,7 +12,8 @@ public class VentaDAO {
     public List<Venta> obtenerTodas() {
         List<Venta> lista = new ArrayList<>();
         String sql = "SELECT v.venta_id, v.fecha, v.cliente_id, " +
-                "COALESCE(c.nombre, 'Desconocido') AS cliente_nombre, " +
+                "COALESCE(CONCAT(c.nombre, ' ', c.apellido), 'Desconocido') AS cliente_nombre, " +
+
                 "v.metodo_pago, v.total " +
                 "FROM VENTA v " +
                 "LEFT JOIN CLIENTE c ON v.cliente_id = c.cliente_id " +
@@ -35,7 +36,7 @@ public class VentaDAO {
     // Obtiene una venta específica buscando por su ID
     public Venta obtenerPorId(int id) {
         String sql = "SELECT v.venta_id, v.fecha, v.cliente_id, " +
-                "COALESCE(c.nombre, 'Desconocido') AS cliente_nombre, " +
+                "COALESCE(CONCAT(c.nombre, ' ', c.apellido), 'Desconocido') AS cliente_nombre, " +
                 "v.metodo_pago, v.total " +
                 "FROM VENTA v " +
                 "LEFT JOIN CLIENTE c ON v.cliente_id = c.cliente_id " +

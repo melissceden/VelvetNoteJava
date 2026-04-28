@@ -12,17 +12,15 @@ public class Launcher extends Application {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/fxml/Login.fxml")
         );
-
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(
                 getClass().getResource("/css/styles.css").toExternalForm()
         );
-
         stage.setTitle("Velvet Note");
         stage.setScene(scene);
         stage.setResizable(true);
-        stage.setMinWidth(900);
-        stage.setMinHeight(600);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(650);
         stage.setMaximized(true);
         stage.show();
     }

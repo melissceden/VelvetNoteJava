@@ -6,7 +6,7 @@ module com.example.velvet_note {
     requires org.apache.commons.codec;
 
     opens com.example.velvet_note to javafx.graphics, javafx.fxml;
-    opens com.example.velvet_note.vista to javafx.fxml;
+    opens com.example.velvet_note.controladores to javafx.fxml;
     opens com.example.velvet_note.modelo to javafx.base;
 
 }

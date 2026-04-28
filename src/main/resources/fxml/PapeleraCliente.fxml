@@ -4,24 +4,18 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.velvet_note.controladores.ClienteController"
+      fx:controller="com.example.velvet_note.controladores.PapeleraClienteController"
       spacing="20"
       styleClass="catalogo-container">
     <stylesheets>
         <URL value="@../css/styles.css"/>
     </stylesheets>
     <HBox spacing="12" styleClass="header-box">
-        <Label text="Clientes" styleClass="vn-titulo"/>
+        <Label text="Papelera de Clientes" styleClass="vn-titulo"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Agregar"
-                onAction="#agregarCliente"
-                styleClass="vn-btn-primario, btn-agregar-cliente"/>
-        <Button text="Eliminar"
-                onAction="#eliminarCliente"
-                styleClass="vn-btn-eliminar"/>
-        <Button text="Papelera"
-                onAction="#handlePapelera"
-                styleClass="btn-papelera"/>
+        <Button text="Restaurar"
+                onAction="#handleRestaurar"
+                styleClass="vn-btn-primario"/>
     </HBox>
     <TableView fx:id="tablaClientes"
                VBox.vgrow="ALWAYS"
@@ -38,7 +32,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
         <placeholder>
-            <Label text="No hay clientes registrados." styleClass="vn-placeholder"/>
+            <Label text="No hay clientes eliminados." styleClass="vn-placeholder"/>
         </placeholder>
     </TableView>
 </VBox>

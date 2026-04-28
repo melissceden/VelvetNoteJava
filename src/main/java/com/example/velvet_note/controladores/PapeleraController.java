@@ -1,4 +1,4 @@
-package com.example.velvet_note.vista;
+package com.example.velvet_note.controladores;
 
 import com.example.velvet_note.dao.ProductoDAO;        // Acceso a datos de productos
 import com.example.velvet_note.modelo.Producto;        // Modelo Producto

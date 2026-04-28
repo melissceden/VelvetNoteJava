@@ -1,7 +1,6 @@
-package com.example.velvet_note.vista;
+package com.example.velvet_note.controladores;
 
 import com.example.velvet_note.servicio.AuthServicio;
-import com.example.velvet_note.servicio.VentaServicio;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

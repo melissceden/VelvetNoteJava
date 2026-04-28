@@ -9,7 +9,7 @@
 <?import java.net.URL?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.example.velvet_note.vista.LoginController"
+           fx:controller="com.example.velvet_note.controladores.LoginController"
            prefWidth="900" prefHeight="550"
            styleClass="login-root">
 

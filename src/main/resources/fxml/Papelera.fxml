@@ -4,7 +4,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.velvet_note.vista.PapeleraController"
+      fx:controller="com.example.velvet_note.controladores.PapeleraController"
       spacing="10"
       styleClass="form-agregar"
       prefWidth="800"

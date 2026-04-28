@@ -1,4 +1,4 @@
-package com.example.velvet_note.vista;
+package com.example.velvet_note.controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -9,7 +9,7 @@ public class AgregarClienteController {
     @FXML private TextField txtCedula;
     @FXML private TextField txtNombre;   // FXML aclara que son elementos del FXML de agregar cliente
     @FXML private TextField txtApellido; // private encapsula las variables
-    @FXML private TextField txtTelefono; //
+    @FXML private TextField txtTelefono;
     @FXML private TextField txtEmail;
 
     // se ejecuta cuando el usuario presiona guardar

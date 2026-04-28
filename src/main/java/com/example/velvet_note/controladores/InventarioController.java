@@ -1,4 +1,4 @@
-package com.example.velvet_note.vista;
+package com.example.velvet_note.controladores;
 
 // importaciones necesarias
 import com.example.velvet_note.dao.ProductoDAO;

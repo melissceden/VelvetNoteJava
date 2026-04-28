@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.net.URL?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.velvet_note.vista.InventarioController"
-      spacing="16"
+      fx:controller="com.example.velvet_note.controladores.InventarioController"
+      spacing="20"
       styleClass="catalogo-container">
-
     <stylesheets>
         <URL value="@../css/styles.css" />
     </stylesheets>
-
-    <HBox alignment="CENTER_LEFT" spacing="16" styleClass="header-box">
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="header-box">
         <Label text="Inventario" styleClass="vn-titulo"/>
         <Region HBox.hgrow="ALWAYS" />
-        <ComboBox fx:id="comboFiltro" onAction="#handleFiltro" promptText="Filtrar por..." styleClass="combo-filtro"/>
-        <Button text="Agregar" onAction="#handleAgregar" styleClass="vn-btn-primario, btn-agregar"/>
-        <Button text="Eliminar" onAction="#handleEliminar" styleClass="vn-btn-eliminar"/>
-        <Button text="Papelera" onAction="#handlePapelera" styleClass="btn-papelera"/>
+        <ComboBox fx:id="comboFiltro" onAction="#handleFiltro"
+                  promptText="Filtrar por..." styleClass="combo-filtro"/>
+        <Button text="Agregar" onAction="#handleAgregar"
+                styleClass="vn-btn-primario, btn-agregar"/>
+        <Button text="Eliminar" onAction="#handleEliminar"
+                styleClass="vn-btn-eliminar"/>
+        <Button text="Papelera" onAction="#handlePapelera"
+                styleClass="btn-papelera"/>
     </HBox>
-
-    <TableView fx:id="tablaInventario" VBox.vgrow="ALWAYS" styleClass="vn-tabla">
+    <TableView fx:id="tablaInventario"
+               VBox.vgrow="ALWAYS"
+               styleClass="vn-tabla">
         <columns>
-            <TableColumn fx:id="colId"       text="ID"       prefWidth="50"  styleClass="vn-columna"/>
-            <TableColumn fx:id="colTitulo"   text="Título"   prefWidth="200" styleClass="vn-columna"/>
-            <TableColumn fx:id="colArtista"  text="Artista"  prefWidth="150" styleClass="vn-columna"/>
-            <TableColumn fx:id="colGenero"   text="Género"   prefWidth="130" styleClass="vn-columna"/>
-            <TableColumn fx:id="colFormato"  text="Formato"  prefWidth="110" styleClass="vn-columna"/>
-            <TableColumn fx:id="colPrecio"   text="Precio"   prefWidth="120" styleClass="vn-columna"/>
-            <TableColumn fx:id="colStock"    text="Stock"    prefWidth="70"  styleClass="vn-columna"/>
-            <TableColumn fx:id="colVendidos" text="Vendidos" prefWidth="50"  styleClass="vn-columna"/>
+            <TableColumn fx:id="colId"       text="ID"       prefWidth="50"/>
+            <TableColumn fx:id="colTitulo"   text="Título"   prefWidth="200"/>
+            <TableColumn fx:id="colArtista"  text="Artista"  prefWidth="150"/>
+            <TableColumn fx:id="colGenero"   text="Género"   prefWidth="130"/>
+            <TableColumn fx:id="colFormato"  text="Formato"  prefWidth="110"/>
+            <TableColumn fx:id="colPrecio"   text="Precio"   prefWidth="120"/>
+            <TableColumn fx:id="colStock"    text="Stock"    prefWidth="70"/>
+            <TableColumn fx:id="colVendidos" text="Vendidos" prefWidth="80"/>
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
+        <placeholder>
+            <Label text="No hay productos en inventario." styleClass="vn-placeholder"/>
+        </placeholder>
     </TableView>
-
 </VBox>

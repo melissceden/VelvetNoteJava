@@ -25,6 +25,7 @@ public class ClienteDAO {
                 c.setClienteId(rs.getInt("cliente_id"));
                 c.setCedula(rs.getString("cedula"));
                 c.setNombre(rs.getString("nombre"));
+                c.setApellido(rs.getString("apellido"));
                 c.setTelefono(rs.getString("telefono"));
                 c.setEmail(rs.getString("email"));
 
@@ -79,4 +80,44 @@ public class ClienteDAO {
             return false;
         }
     }
+    // Obtiene clientes inactivos (papelera)
+    public List<Cliente> obtenerEliminados() {
+        List<Cliente> lista = new ArrayList<>();
+        String sql = "SELECT * FROM CLIENTE WHERE estado = 0 ORDER BY cliente_id DESC";
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setClienteId(rs.getInt("cliente_id"));
+                c.setCedula(rs.getString("cedula"));
+                c.setNombre(rs.getString("nombre"));
+                c.setApellido(rs.getString("apellido"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setEmail(rs.getString("email"));
+                Date fecha = rs.getDate("fecha_registro");
+                if (fecha != null) c.setFechaRegistro(fecha.toLocalDate());
+                lista.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al listar papelera: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // Reactiva un cliente desde la papelera
+    public boolean restaurar(int id) {
+        String sql = "UPDATE CLIENTE SET estado = 1 WHERE cliente_id = ?";
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al restaurar cliente: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+
 }

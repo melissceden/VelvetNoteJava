@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.velvet_note.vista.EliminarProductoController"
+      fx:controller="com.example.velvet_note.controladores.EliminarProductoController"
       spacing="14"
       styleClass="form-agregar"
       prefWidth="600"

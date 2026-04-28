@@ -1,64 +1,54 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.velvet_note.vista.VentaController"
-            styleClass="catalogo-container"
-            stylesheets="@../css/styles.css">
-
-    <center>
-        <VBox styleClass="ventas-contenedor">
-
-            <HBox styleClass="header-box">
-                <Label text="Ventas" styleClass="vn-titulo"/>
-                <Region HBox.hgrow="ALWAYS"/>
-
-                <Button fx:id="btnEliminar" text="Eliminar"
-                        onAction="#eliminarVenta"
-                        styleClass="vn-btn-eliminar"/>
-            </HBox>
-
-            <TableView fx:id="tablaVentas"
-                       styleClass="vn-tabla"
-                       VBox.vgrow="ALWAYS">
-
-                <columns>
-                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="colFecha" text="Fecha" prefWidth="160"/>
-                    <TableColumn fx:id="colCliente" text="Cliente" prefWidth="200"/>
-                    <TableColumn fx:id="colMetodoPago" text="Método de Pago" prefWidth="150"/>
-                    <TableColumn fx:id="colTotal" text="Total (₡)" prefWidth="120"/>
-                </columns>
-
-                <placeholder>
-                    <Label text="No hay ventas registradas."/>
-                </placeholder>
-
-            </TableView>
-
-            <VBox styleClass="ventas-detalle-seccion">
-
-                <Label fx:id="lblDetallesTitulo"
-                       text="Selecciona una venta para ver sus detalles"
-                       styleClass="ventas-detalle-titulo"/>
-
-                <TableView fx:id="tablaDetalles" styleClass="vn-tabla">
-
-                    <columns>
-                        <TableColumn fx:id="colProducto" text="Producto (Álbum)" prefWidth="260"/>
-                        <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="100"/>
-                        <TableColumn fx:id="colPrecioUnit" text="Precio Unitario (₡)" prefWidth="160"/>
-                        <TableColumn fx:id="colSubtotal" text="Subtotal (₡)" prefWidth="140"/>
-                    </columns>
-
-                    <placeholder>
-                        <Label text="Sin detalles para mostrar."/>
-                    </placeholder>
-
-                </TableView>
-
-            </VBox>
-        </VBox>
-    </center>
-</BorderPane>
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.velvet_note.controladores.VentaController"
+      styleClass="catalogo-container"
+      stylesheets="@../css/styles.css"
+      spacing="20">
+    <HBox styleClass="header-box">
+        <Label text="Ventas" styleClass="vn-titulo"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnEliminar" text="Eliminar"
+                onAction="#eliminarVenta"
+                styleClass="vn-btn-eliminar"/>
+    </HBox>
+    <TableView fx:id="tablaVentas"
+               styleClass="vn-tabla"
+               VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId"         text="ID"              prefWidth="60"/>
+            <TableColumn fx:id="colFecha"      text="Fecha"           prefWidth="160"/>
+            <TableColumn fx:id="colCliente"    text="Cliente"         prefWidth="200"/>
+            <TableColumn fx:id="colMetodoPago" text="Método de Pago"  prefWidth="150"/>
+            <TableColumn fx:id="colTotal"      text="Total (₡)"       prefWidth="120"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <placeholder>
+            <Label text="No hay ventas registradas." styleClass="vn-placeholder"/>
+        </placeholder>
+    </TableView>
+    <VBox styleClass="ventas-detalle-seccion" VBox.vgrow="ALWAYS">
+        <Label fx:id="lblDetallesTitulo"
+               text="Selecciona una venta para ver sus detalles"
+               styleClass="ventas-detalle-titulo"/>
+        <TableView fx:id="tablaDetalles"
+                   styleClass="vn-tabla"
+                   VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colProducto"   text="Producto (Álbum)"      prefWidth="260"/>
+                <TableColumn fx:id="colCantidad"   text="Cantidad"              prefWidth="100"/>
+                <TableColumn fx:id="colPrecioUnit" text="Precio Unitario (₡)"   prefWidth="160"/>
+                <TableColumn fx:id="colSubtotal"   text="Subtotal (₡)"          prefWidth="140"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+            <placeholder>
+                <Label text="Sin detalles para mostrar." styleClass="vn-placeholder"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>
